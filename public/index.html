@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MC Server Query</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>MC Server Status</h1>
+      <p>Input an address such as <code>hypixel.net</code> or <code>play.example.com:25565</code>.</p>
+
+      <form id="query-form">
+        <input id="address" name="address" type="text" placeholder="Enter server address" required />
+        <button type="submit">Query</button>
+      </form>
+
+      <section id="summary" class="summary hidden"></section>
+      <section id="players-section" class="players hidden">
+        <h2>Online Players</h2>
+        <ul id="players-list"></ul>
+      </section>
+      <pre id="result" class="result hidden"></pre>
+    </main>
+
+    <script src="/main.js"></script>
+  </body>
+</html>
