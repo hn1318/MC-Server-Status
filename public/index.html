@@ -3,22 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MC Server Query</title>
+    <title>MC Server Status</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <main class="container">
-      <h1>MC Server Status</h1>
-      <p>Input an address such as <code>hypixel.net</code> or <code>play.example.com:25565</code>.</p>
+      <header class="hero">
+        <h1>MC Server Status</h1>
+        <p>查询 Java / 基岩版服务器状态，支持域名或 IP:端口。</p>
+      </header>
 
       <form id="query-form">
-        <input id="address" name="address" type="text" placeholder="Enter server address" required />
-        <button type="submit">Query</button>
+        <div class="edition-switch" role="radiogroup" aria-label="选择版本">
+          <label class="edition-option">
+            <input type="radio" name="edition" value="java" checked />
+            <span>Java 版</span>
+          </label>
+          <label class="edition-option">
+            <input type="radio" name="edition" value="bedrock" />
+            <span>基岩版</span>
+          </label>
+        </div>
+        <div class="input-row">
+          <input id="address" name="address" type="text" placeholder="例如 hypixel.net 或 play.example.com:25565" required />
+          <button id="submit-btn" type="submit">查询状态</button>
+        </div>
       </form>
 
       <section id="summary" class="summary hidden"></section>
       <section id="players-section" class="players hidden">
-        <h2>Online Players</h2>
+        <h2>在线玩家列表</h2>
         <ul id="players-list"></ul>
       </section>
       <pre id="result" class="result hidden"></pre>

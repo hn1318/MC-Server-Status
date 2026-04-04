@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mc-server-status",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-04-05",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "RATE_LIMIT_WINDOW_MS": "60000",
+    "RATE_LIMIT_MAX_REQUESTS": "20"
+  }
+}

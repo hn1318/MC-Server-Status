@@ -1,4 +1,4 @@
-const express = require("express");
+﻿const express = require("express");
 const path = require("path");
 
 const app = express();
@@ -11,6 +11,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 function isValidAddress(address) {
   return /^[a-zA-Z0-9.-]+(?::\d{1,5})?$/.test(address);
+}
+
+function normalizeEdition(edition) {
+  return edition === "bedrock" ? "bedrock" : "java";
 }
 
 function getClientIp(req) {
@@ -51,6 +55,7 @@ app.use("/api", rateLimit);
 
 app.get("/api/mc-status", async (req, res) => {
   const address = (req.query.address || "").trim();
+  const edition = normalizeEdition((req.query.edition || "").trim().toLowerCase());
 
   if (!address) {
     return res.status(400).json({ error: "Missing address query parameter." });
@@ -61,7 +66,12 @@ app.get("/api/mc-status", async (req, res) => {
   }
 
   try {
-    const upstream = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(address)}`);
+    const upstreamPath = edition === "bedrock" ? "bedrock/3" : "3";
+    const upstream = await fetch(`https://api.mcsrvstat.us/${upstreamPath}/${encodeURIComponent(address)}`, {
+      headers: {
+        "User-Agent": "mc-server-query-app/1.0 (+https://localhost)",
+      },
+    });
 
     if (!upstream.ok) {
       return res.status(502).json({ error: "Failed to fetch upstream MC status." });
@@ -71,6 +81,7 @@ app.get("/api/mc-status", async (req, res) => {
 
     const payload = {
       input: address,
+      edition,
       online: Boolean(raw.online),
       host: raw.hostname || raw.ip || address.split(":")[0],
       port: raw.port || null,
@@ -84,7 +95,6 @@ app.get("/api/mc-status", async (req, res) => {
       motd: raw.motd?.clean || [],
       software: raw.software || null,
       protocol: raw.protocol || null,
-      icon: raw.icon || null,
       raw,
     };
 
